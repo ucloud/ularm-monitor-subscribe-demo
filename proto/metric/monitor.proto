@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = ".;metric";
+
+package metric;
+
+
+service Monitor {
+  rpc Establish(stream EstablishRequest) returns (stream EstablishResponse) {}
+}
+
+message EstablishRequest {
+  string app_id                 = 10;
+  string metric_name            = 20;
+  repeated MetricTag TagFilters = 30;
+}
+
+message EstablishResponse {
+  string                app_id              = 10;             // 唯一标识
+  int64                 timestamp           = 20;             // 时间戳
+  int64                 receive_timestamp   = 30;             // 上报时间戳
+  string                metric_name         = 40;             // 指标名称
+  string                metric_value        = 50;             // 指标值
+  repeated MetricTag    metric_tags         = 60;             // 标签
+}
+
+message MetricTag {
+    string name  = 10;
+    string value = 20;
+}
